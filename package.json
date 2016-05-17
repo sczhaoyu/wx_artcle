@@ -1,0 +1,14 @@
+{
+  "name": "huiju",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start"
+  },
+  "dependencies": {
+    "ajax": "0.0.4",
+    "immutable": "^3.8.1",
+    "react": "^0.14.8",
+    "react-native": "^0.25.1"
+  }
+}
