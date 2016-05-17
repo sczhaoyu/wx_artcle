@@ -21,7 +21,7 @@ BackAndroid.addEventListener('hardwareBackPress', function() {
   _navigator.pop();
   return true;
 });
-class huiju extends Component {
+class WxArtcle extends Component {
   renderSceneAndroid(route, navigator){
      _navigator = navigator;
     if(route.id === 'column'){
@@ -73,4 +73,4 @@ class huiju extends Component {
 }
 
 
-AppRegistry.registerComponent('huiju', () => huiju);
+AppRegistry.registerComponent('wx_artcle', () => WxArtcle);

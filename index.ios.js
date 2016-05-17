@@ -1,53 +1,76 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
 
 import React, { Component } from 'react';
 import {
   AppRegistry,
-  StyleSheet,
-  Text,
-  View
+  Navigator,
+  BackAndroid
 } from 'react-native';
-
-class huiju extends Component {
+var _navigator;
+var Login=require("./wx/login.js");
+var Column=require("./wx/column.js");
+var Media=require("./wx/media.js");
+var Web=require("./wx/web.js");
+var ArtcleList=require("./wx/artcle_list.js");
+BackAndroid.addEventListener('hardwareBackPress', function() {
+  if(_navigator == null){
+    return false;
+  }
+  if(_navigator.getCurrentRoutes().length === 1){
+    return false;
+  }
+  _navigator.pop();
+  return true;
+});
+class WxArtcle extends Component {
+  renderSceneAndroid(route, navigator){
+     _navigator = navigator;
+    if(route.id === 'column'){
+      return (
+        <Column navigator={navigator}/>
+      );
+    }
+    if(route.id === 'login'){
+      return (
+        <Login navigator={navigator}/>
+      );
+    }
+    if(route.id === 'media'){
+      return (
+        <Media  catalogId={route.cid} navigator={navigator}/>
+      );
+    }
+    if(route.id === 'web'){
+      return (
+        <Web  url={route.url} navigator={navigator}/>
+      );
+    }
+    if (route.id="artcleList") {
+       return (
+        <ArtcleList  wxId={route.wxId} navigator={navigator}/>
+       );
+    }
+  }
+  configureScenceAndroid(){
+    return Navigator.SceneConfigs.FadeAndroid;
+  }
+  handleUpdateChange(t,name){
+       var login = Immutable.Map({});
+       login=login.set(name,t);
+       this.setState(login.toObject());
+  }
   render() {
+    var renderScene = this.renderSceneAndroid;
+    var configureScence = this.configureScenceAndroid;
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
+      <Navigator
+        debugOverlay={true}
+        initialRoute={{title: '登录界面', id:'login'}}
+        configureScence={{configureScence}}
+        renderScene={renderScene}
+      />
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
 
-AppRegistry.registerComponent('huiju', () => huiju);
+AppRegistry.registerComponent('wx_artcle', () => WxArtcle);
