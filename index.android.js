@@ -51,7 +51,7 @@ class WxArtcle extends Component {
     }
   }
   configureScenceAndroid(){
-    return Navigator.SceneConfigs.FadeAndroid;
+    return Navigator.SceneConfigs.PushFromRight;
   }
   handleUpdateChange(t,name){
        var login = Immutable.Map({});

@@ -30,7 +30,6 @@ class ArtcleList extends Component {
   }
   loadArtcle(){
     var that=this;
-    console.log(this.props.wxId);
     Request.wx("artcle?wxId="+this.props.wxId,{},function(data){
       if (!data.success) {
         that.setState({
@@ -44,6 +43,7 @@ class ArtcleList extends Component {
     });
   }
   openUrl(url){
+       
      this.props.navigator.push({url:url,id:"web"});
   }
   renderRow(v,that){
@@ -54,35 +54,39 @@ class ArtcleList extends Component {
       return(
       <View  key={"arid"+v.artcleId} style={{padding:10,backgroundColor:"#EBEBEB"}}>
         <View style={styles.list}>
-            <TouchableHighlight style={styles.fisrt} onPress={()=>that.openUrl(v.sourceUrl)}>
+            <TouchableHighlight style={styles.fisrt}  onPress={()=>this.openUrl(v.sourceUrl)}>
                <Image  resizeMode={"cover"} style={styles.timg}  source={{uri:v.coverUrl}}>
                    <View opacity={0.6} style={styles.title}/>
                    <Text style={{bottom:0,position:"absolute",color:"#FFFFFF",fontSize:16,lineHeight:29}}>{t}</Text>
                </Image>
             </TouchableHighlight>
-            {that.renderLines(v.artcles,that)}
+            
+            {that.renderLines(v.artcles)}
+             
         </View>
        </View>
      );
     
   }
-  renderLines(v,that){
+  renderLines(v){
     if (v==null) {
       return null;
     }
     var ret=[];
     for (var i = 0; i<v.length; i++) {
-       var s=v[i];
-       ret.push(
-         <TouchableHighlight onPress={()=>that.openUrl(s.sourceUrl)} key={"arid"+v[i].artcleId} style={styles.fisrt}>
-               <View style={styles.line}>
-                   <Text style={{color:"#141414",fontSize:14,flex:8}}>{s.title}</Text>
-                   <Image resizeMode={"cover"}  style={{height:50,flex:2,marginRight:10}}  source={{uri:s.coverUrl}}/>
-               </View>
-         </TouchableHighlight>
-       );
+       ret.push(this.getLine(v[i]));
     }
     return ret;
+  }
+  getLine(v){
+    return(
+        <TouchableHighlight onPress={()=>this.openUrl(v.sourceUrl)} key={"aridchild"+v.artcleId} style={styles.txt}>
+               <View style={styles.line}>
+                   <Text style={{color:"#141414",fontSize:14,flex:8}}>{v.title}</Text>
+                   <Image resizeMode={"cover"}  style={{height:50,flex:2,marginRight:10}}  source={{uri:v.coverUrl}}/>
+               </View>
+         </TouchableHighlight>
+    );
   }
   render() {
     if (this.state.artcles.length==0) {
@@ -131,6 +135,9 @@ const styles = StyleSheet.create({
     borderColor:"#000000",
   },
   fisrt:{
+      width:Dimensions.get("window").width-20,
+  },
+  txt:{
       width:Dimensions.get("window").width-20,
   },
   list:{
