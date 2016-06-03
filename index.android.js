@@ -50,8 +50,8 @@ class WxArtcle extends Component {
        );
     }
   }
-  configureScenceAndroid(){
-    return Navigator.SceneConfigs.PushFromRight;
+  configureScenceAndroid(route, routeStack){
+    return Navigator.SceneConfigs.FloatFromLeft;
   }
   handleUpdateChange(t,name){
        var login = Immutable.Map({});
@@ -65,7 +65,7 @@ class WxArtcle extends Component {
       <Navigator
         debugOverlay={true}
         initialRoute={{title: '登录界面', id:'login'}}
-        configureScence={{configureScence}}
+        configureScence={configureScence}
         renderScene={renderScene}
       />
     );
